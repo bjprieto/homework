@@ -7,6 +7,13 @@
 
 # Note: this is a common interview question
 
+# Iterate through integers 1-100 printing either the integer or a message
+# depending on how the integers divide by 3 and 5
+for i in range(1, 101):
+	if i % (3*5) == 0: print('FizzBuzz')
+	elif i % 3 == 0: print('Fizz')
+	elif i % 5 == 0: print('Buzz')
+	else: print(i)	
 
 """
 python3 23fizzbuzz.py

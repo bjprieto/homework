@@ -14,6 +14,15 @@
 seq = 'ACGACGCAGGAGGAGAGTTTCAGAGATCACGAATACATCCATATTACCCAGAGAGAG'
 w = 11
 
+# Print the nucleotide position, window, and GC% (to 4 sig figs)
+for i in range(len(seq)-w+1): # Window sliding
+	print(i, end=' ')
+	if i <= (len(seq)-w): w_seq = seq[i:i+w]
+	print(w_seq, end=' ')
+	gc_count = 0
+	for nt in w_seq: # GC recognition
+		if nt == 'G' or nt == 'C': gc_count += 1
+	print(f'{gc_count/w:.4f}')
 
 """
 python3 26gcwin.py

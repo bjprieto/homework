@@ -7,6 +7,17 @@
 
 # Hint: if you get stuck for more than 10 minutes, get help
 
+# Initialize variables
+aa = 'ACDEFGHIKLMNPQRSTVWY' # String of all the 1-letter amino acid codes
+combos = 0 # Count of 2-amino acid combos
+
+# Generate a sequence of each possible amino acid combo, skipping over 
+# self-combos and repeated combos
+for aa1 in range(len(aa)):
+	for aa2 in range(aa1+1, len(aa)):
+		print(aa[aa1], aa[aa2])
+		combos += 1
+print(combos)
 
 """
 python3 28aapairs.py

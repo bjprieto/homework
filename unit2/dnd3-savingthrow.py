@@ -20,6 +20,57 @@
 # What is the probability of success normally or with advantage/disadvantage?
 # Make a table showing the results.
 
+import random
+
+# Initialize variables
+n = 10**6
+
+for dc in range(5, 16, 5):
+	print(dc, end='\t')
+	
+	# Straight roll
+	sum = 0
+	count = 0
+
+	# print('Rolls')
+	for i in range(n):
+		roll = random.randint(1,20)
+		if roll >= dc: sum += 1
+		count += 1
+		# print(roll, end=' ')
+	print(f'{sum/count:.3f}', end ='\t')
+
+
+	# Advantage
+	sum = 0
+	count = 0
+
+	# print('Rolls')
+	for i in range(n):
+		roll1 = random.randint(1,20)
+		roll2 = random.randint(1,20)
+		if roll1 >= roll2: roll = roll1
+		if roll2 >= roll1: roll = roll2
+		if roll >= dc: sum += 1
+		count += 1
+		# print(roll, end=' ')
+	print(f'{sum/count:.3f}', end='\t')
+	
+	# Disadvantage
+	sum = 0
+	count = 0
+
+	# print('Rolls')
+	for i in range(n):
+		roll1 = random.randint(1,20)
+		roll2 = random.randint(1,20)
+		if roll1 <= roll2: roll = roll1
+		if roll2 <= roll1: roll = roll2
+		if roll >= dc: sum += 1
+		count += 1
+		# print(roll, end=' ')
+	print(f'{sum/count:.3f}')
+
 
 """
 python3 dnd3-savingthrow.py

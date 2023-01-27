@@ -11,6 +11,40 @@
 # Write a program that simulates death saves. What is the probability one
 # dies, stabilizes, or revives?
 
+import random
+
+# Initialize variables
+n = 10**6
+die_chance = 0
+save_chance = 0
+revive_chance = 0
+
+for i in range(n):
+	
+	# Initialize variables
+	revive = 0
+	save = 0
+	death = 0
+	
+	# Roll death saves until achieving a result
+	while save < 3 and death > -3 and revive != 1:
+		roll = random.randint(1,20)
+		if roll == 20: revive = 1
+		elif roll == 1: death -= 2
+		elif roll >= 10: save += 1
+		else: death -= 1
+		# print(roll, death, save, revive, sep='\t')
+
+	# Keep track of each result
+	if death <= -3: die_chance += 1
+	if save == 3: save_chance += 1
+	if revive == 1: revive_chance += 1
+
+
+# Print results
+print('die:', f'{die_chance/n:.3f}')
+print('stabilize:', f'{save_chance/n:.3f}')
+print('revive:', f'{revive_chance/n:.3f}')	
 
 """
 python3 dnd4-deathsaves.py

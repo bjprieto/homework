@@ -6,6 +6,10 @@
 
 # Your code goes here
 
+#Iterate through integers 5-50 with a step of 7
+for i in range (5, 50, 7):
+	print(i)
+
 """
 python3 20loop.py
 5

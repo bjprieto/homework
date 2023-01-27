@@ -6,6 +6,33 @@
 # versus all fire saving throws. Which one is better? Make a program that
 # simulates saving throw success at various DCs (1-20) for ring and cloak.
 
+import random
+
+# Initialize variables
+n = 10**6
+
+for dc in range(1, 21):
+
+	# Initialize loop variables
+	r_save = 0
+	c_save = 0
+	
+	for i in range(n):
+	
+		# Ring of Fire Protection
+		roll1 = random.randint(1,20)
+		roll2 = random.randint(1,20)
+		if roll1 >= roll2: roll = roll1
+		elif roll2 >= roll1: roll = roll2
+		if roll >= dc: r_save += 1
+		
+		# Cloak of Fire Protection
+		roll = random.randint(1,20)+3
+		if roll >= dc: c_save += 1
+	
+	# Print results	
+	print(dc, f'{r_save/n:.4f}', f'{c_save/n:.4f}')
+	
 
 """
 python3 dnd5-fire.py

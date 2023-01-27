@@ -8,6 +8,22 @@
 # What is the optimal strategy? Simulate it.
 # Make a table showing reroll threshold (use <=) and average damage.
 
+import random
+
+# Initialize variables
+n = 10**6
+
+# Generate table of reroll thresholds and average damages
+for thresh in range(2,8):
+	sum = 0 # Sum of damage
+	for i in range(n):
+		roll = random.randint(1,8)
+		# print(roll, end=' ')
+		if roll <= thresh: roll = random.randint(1,8)
+		# print(roll, end=' ')
+		sum += roll
+		# print(sum)
+	print(thresh, f'{sum/n:.3f}')
 
 """
 python3 dnd2-piercer.py

@@ -8,6 +8,10 @@
 
 dna = 'ATGGCCTTT'
 
+# Iterate over each nucleotide position in the seq, printing the position,
+# frame, and nucleotide identity
+for i in range(len(dna)):
+	print(i, i%3, dna[i])
 
 """
 python3 27frame.py
