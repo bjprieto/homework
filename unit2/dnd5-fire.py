@@ -14,20 +14,32 @@ n = 10**6
 for dc in range(1, 21):
 
 	# Initialize loop variables
-	r_save = 0
-	c_save = 0
+	r_save = 0 # Sum of Ring of Fire Protection fire saves
+	c_save = 0 # Sum of Cloak of Fire Protection fire saves
 	
 	for i in range(n):
 	
 		# Ring of Fire Protection
+		
+		# Perform rolls
 		roll1 = random.randint(1,20)
 		roll2 = random.randint(1,20)
+		
+		# Apply advantages
 		if roll1 >= roll2: roll = roll1
 		elif roll2 >= roll1: roll = roll2
+		
+		# Passes DC?
 		if roll >= dc: r_save += 1
 		
+		
+		
 		# Cloak of Fire Protection
+		
+		# Perform roll and apply effect
 		roll = random.randint(1,20)+3
+		
+		# Passes DC?
 		if roll >= dc: c_save += 1
 	
 	# Print results	

@@ -13,15 +13,12 @@ print(n, end= ' ')
 
 # Print running sum
 sum = 0
-for i in range(6):
-	sum += i
-print(sum, end=' ')
-
-# Print factorial
 fac = 1
-for i in range(1, 6):
+
+for i in range(1,6):
+	sum += i
 	fac *= i
-print(fac)
+print(sum, fac)
 """
 python3 22sumfac.py
 5 15 120

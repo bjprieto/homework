@@ -28,16 +28,20 @@ for i in range(n):
 	
 	# Roll death saves until achieving a result
 	while save < 3 and death > -3 and revive != 1:
+		
+		# Perform roll
 		roll = random.randint(1,20)
-		if roll == 20: revive = 1
-		elif roll == 1: death -= 2
+		
+		# Apply roll to condition
+		if roll == 20:   revive = 1
+		elif roll == 1:  death -= 2
 		elif roll >= 10: save += 1
 		else: death -= 1
-		# print(roll, death, save, revive, sep='\t')
+		# print(roll, death, save, revive, sep='\t') # check status
 
 	# Keep track of each result
 	if death <= -3: die_chance += 1
-	if save == 3: save_chance += 1
+	if save == 3:   save_chance += 1
 	if revive == 1: revive_chance += 1
 
 

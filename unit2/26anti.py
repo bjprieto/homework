@@ -9,17 +9,18 @@ dna = 'ACTGAAAAAAAAAAA'
 
 
 # Initialize variables
-comp = '' # Complement strand DNA, written in the 5' to 3' direction
+r_comp = '' # Reverse complement strand seq
 
-# Iterate over each nucleotide in the seq while generating the complement 
-# strand seq
-for i in range(len(dna), 0, -1):
+# Iterate over each nucleotide in the seq while generating the reversed
+# complement strand seq
+for i in range(0, len(dna), 1):
 	nt = dna[i-1]
-	if nt == 'A': comp += 'T'
-	elif nt == 'T': comp += 'A'
-	elif nt == 'G': comp += 'C'
-	else: comp += 'G'
-print(comp)
+	if nt == 'A':   r_comp += 'T'
+	elif nt == 'T': r_comp += 'A'
+	elif nt == 'G': r_comp += 'C'
+	else:           r_comp += 'G'
+	
+print(r_comp)
 
 """
 python3 26anti.py

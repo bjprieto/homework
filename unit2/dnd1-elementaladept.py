@@ -5,31 +5,44 @@
 # rolls of 1 become 2. How much more damage do you do on average if you are
 # an Elemental Adept? Simulate by rolling dice a million times.
 
-
+## Initialize modules and variables
 import random
+n = 10**6
 
-# Vanilla Fire Bolt average calculator
-dmg_vfb = 0 # Sum of Fire Bolt damage
+## Vanilla Fire Bolt
 
-for i in range(10**6):
+# Sum of Fire Bolt damage
+dmg_vfb = 0 
+
+# Calculate average damage
+for i in range(n):
 	dmg = random.randint(1,10)
 	dmg_vfb += dmg
-avg_vfb = dmg_vfb/(10**6)
-# print(avg_vfb)
 
-# Elemental Adapt Fire Bolt average calculator
-eafb_dmg = 0 # Sum of Fire Bolt damage with Elemental Adapt
+# Average Fire Bolt damage
+avg_vfb = dmg_vfb/n
+# print(avg_vfb) # check
 
-for i in range(10**6):
+
+## Elemental Adapt Fire Bolt
+	
+# Sum of Fire Bolt damage with Elemental Adapt
+eafb_dmg = 0 
+
+# Calculate average damage
+for i in range(n):
 	dmg = random.randint(1,10)
 	if dmg == 1: dmg = 2
 	eafb_dmg += dmg
-avg_eafb = eafb_dmg/(10**6)
-# print(avg_eafb)
+
+# Average Elemental Adapt Fire Bolt Damage
+avg_eafb = eafb_dmg/n
+# print(avg_eafb) # check
 
 
-# Calculate and print difference of averages
+## Compare averages by difference
 print(f'{avg_eafb - avg_vfb:.1f}')
+
 """
 python3 dnd1-elementaladept.py
 0.1

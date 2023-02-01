@@ -15,14 +15,22 @@ n = 10**6
 
 # Generate table of reroll thresholds and average damages
 for thresh in range(2,8):
-	sum = 0 # Sum of damage
+
+	# Sum of damage
+	sum = 0 
+	
+	# Perform re-rolls
 	for i in range(n):
 		roll = random.randint(1,8)
-		# print(roll, end=' ')
+		# print(roll, end=' ') # check
+		
 		if roll <= thresh: roll = random.randint(1,8)
-		# print(roll, end=' ')
+		# print(roll, end=' ') # check replaced roll
+		
 		sum += roll
-		# print(sum)
+		# print(sum) # check update
+	
+	# Print threshold with re-roll average
 	print(thresh, f'{sum/n:.3f}')
 
 """

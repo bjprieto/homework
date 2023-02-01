@@ -22,55 +22,60 @@
 
 import random
 
-# Initialize variables
-n = 10**6
-
+# Perform rolls and calculate averages
 for dc in range(5, 16, 5):
-	print(dc, end='\t')
+
+	# Initialize variables
+	n = 10**5
+	reg_sum = 0 # Sum of straight/regular rolls
+	adv_sum = 0 # Sum of advantage rolls
+	dis_sum = 0 # Sum of disadvantage rolls
 	
-	# Straight roll
-	sum = 0
-	count = 0
-
-	# print('Rolls')
 	for i in range(n):
-		roll = random.randint(1,20)
-		if roll >= dc: sum += 1
-		count += 1
-		# print(roll, end=' ')
-	print(f'{sum/count:.3f}', end ='\t')
-
-
-	# Advantage
-	sum = 0
-	count = 0
-
-	# print('Rolls')
-	for i in range(n):
+		
+		# Straight/regular roll
+		
+		# Perform roll
 		roll1 = random.randint(1,20)
+		
+		# Passes DC?
+		if roll1 >= dc: reg_sum += 1
+
+
+		
+		# Perform second roll
 		roll2 = random.randint(1,20)
-		if roll1 >= roll2: roll = roll1
-		if roll2 >= roll1: roll = roll2
-		if roll >= dc: sum += 1
-		count += 1
-		# print(roll, end=' ')
-	print(f'{sum/count:.3f}', end='\t')
+# 		print(roll1, roll2, end=' ') # roll check
+		
+		
+		
+		# Advantage
+		
+		# Apply advantage
+		if roll1 >= roll2:   roll = roll1
+		elif roll2 >= roll1: roll = roll2
+		
+		# Passes DC?
+		if roll >= dc: adv_sum += 1
+# 		print(roll, end=' ') # roll check
+# 		print(adv_sum, end=' ') # sum check
+		
+		
+		
+		# Disadvantage
+		
+		# Apply disadvantage
+		if roll1 <= roll2:   roll = roll1
+		elif roll2 <= roll1: roll = roll2
+		
+		# Passes DC?
+		if roll >= dc: dis_sum += 1
+# 		print(roll) # roll check
+# 		print(dis_sum) # sum check
 	
-	# Disadvantage
-	sum = 0
-	count = 0
-
-	# print('Rolls')
-	for i in range(n):
-		roll1 = random.randint(1,20)
-		roll2 = random.randint(1,20)
-		if roll1 <= roll2: roll = roll1
-		if roll2 <= roll1: roll = roll2
-		if roll >= dc: sum += 1
-		count += 1
-		# print(roll, end=' ')
-	print(f'{sum/count:.3f}')
-
+	# Print averages
+	print(dc, f'{reg_sum/n:.3f}', f'{adv_sum/n:.3f}',
+	 	  f'{dis_sum/n:.3f}', sep='\t')
 
 """
 python3 dnd3-savingthrow.py

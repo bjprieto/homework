@@ -13,6 +13,8 @@ total_count = 0 # Total number of nucleotides in the seq
 for nt in dna:
 	if nt == 'G' or nt == 'C': gc_count += 1
 	total_count += 1
+
+# Print Results
 gc_perc = gc_count/total_count # Percent GC nucleotides in the seq
 print(f'{gc_perc:.2f}')
 
