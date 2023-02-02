@@ -1,0 +1,79 @@
+"""
+Compare two different approaches to sequence evaluation. 
+
+Tests two methods to specifically evaluate the GC content of a randomly
+generated sequence with n nucleotides, calculating a moving %GC content with
+window size w. 
+"""
+
+
+# Initialize overall variables and modules
+import random
+n = 30
+w = 12
+seq = ''
+
+# Generate random sequence
+for nt in range(n):
+	seq += random.choice('ATGC')
+
+# Print variables
+print('Window =', w)
+print('Seqence length =', len(seq))
+print('Sequence =', seq, end='\n\n') # Check seq
+
+
+
+# Nested for loop version (simple)
+print('Nested for loops version')
+
+# Slide evaluation window
+for i in range(len(seq)-w+1):
+
+
+	# Initialize loop variables
+	win = seq[i:i+w]
+	gc = 0
+	
+	# Evaluate GC content for each window
+	for nt in win:
+		if nt == 'G' or nt == 'C': gc += 1
+		
+	# Print results
+	print(i, win, gc, f'{gc/w:.2f}')
+
+
+	
+# 2 for loops version (optimal)
+
+# Initialize variables
+print('\nTwo separate for loops version')
+gc = 0
+
+# Evaluate GC content of the first window
+for nt in seq[:w]:
+	if nt == 'G' or nt == 'C': gc +=1
+	
+# Print results
+print(0, seq[:w], gc, f'{gc/w:.2f}')
+
+# Evaluate the GC content of each window
+for i in range(1, len(seq)-w+1):
+
+	# Evaluate GC content lost by window slide
+	if seq[i-1] == 'G' or seq[i-1] == 'C': gc -= 1
+	
+	# Evaluate GC content added by window slide
+	if seq[i+w-1] == 'G' or seq[i+w-1] == 'C': gc += 1
+	
+	# Print results
+	print(i, seq[i:i+w], gc, f'{gc/w:.2f}')
+	
+"""
+Misc. Notes
+
+Keep simple algorithms to help debug optimal ones*.
+*optimal meaning necessitating less computation
+
+Remove added files from GitHub: git rm -f file_name (f = "force remove")
+"""
