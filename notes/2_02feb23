@@ -2,7 +2,8 @@
 Compare two different approaches to sequence evaluation. 
 
 Tests two methods to specifically evaluate the GC content of a randomly
-generated sequence with n nucleotides, calculating a moving %GC content with
+generated sequence with n nucleotides, calculating a moving %GC content 
+with
 window size w. 
 """
 
@@ -76,4 +77,3 @@ Keep simple algorithms to help debug optimal ones*.
 *optimal meaning necessitating less computation
 
 Remove added files from GitHub: git rm -f file_name (f = "force remove")
-"""
