@@ -39,11 +39,32 @@ for i in range(n):
 	
 	# Tally instances of shared birthdays per iteration
 	for day in cal:
-		if day == 2: 
+		if day >= 2: 
 			hit += 1
 			break
 	
-# Variation 2: Birthday list
+# # Variation 2: Calendar list with simultaneous checking
+# for i in range(n):
+# 
+# 	# Initialize variables
+# 	cal = [0]*days
+# 	# print(cal) # check
+# 
+# 	# Generate birthdays
+# 	for person in range(ppl):
+# 		bday = random.randint(0, days-1)
+# 		cal[bday] += 1
+# 		# print(bday) # check
+# 		
+# 		# Tally instances of shared birthdays per iteration
+# 		cal.sort()
+# 		if cal[-1] >= 2: 
+# 			hit += 1
+# 			break
+# 	
+# 	# print(cal) # check
+	
+# Variation 3: Birthday list
 # for i in range(n):
 # 
 # 	# Initialize variables
