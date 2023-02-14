@@ -30,7 +30,11 @@ for read in range(readn):
 	# print(pos) # check
 
 # Trim undersampled ends of the genome
-genoW = geno[readl-1:-readl+1]
+genoW = geno[readl:-readl]
+
+# I found that frequently, positions readl+1 and readl-1 weren't all that
+# undersampled, but it was more accurate to exclude those positions in
+# case they happened to be undersampled for further calculations
 
 # Check block
 # print(geno)
