@@ -29,6 +29,24 @@ for read in range(readn):
 	for i in range(readl): geno[pos+i] += 1
 	# print(pos) # check
 
+# Trim undersampled ends of the genome
+genoW = geno[readl-1:-readl+1]
+
+# Check block
+# print(geno)
+# print(genoW)
+
+# Calculate stats
+min = min(genoW)
+max = max(genoW)
+avg = sum(genoW)/len(genoW)
+
+# Print results
+print(min, max, f'{avg:.5f}')
+
+"""
+Archived suboptimal code
+
 # Exclude the undersampled ends from calculations
 start = None                      # start position of the 'working genome'
 end = None                        # end position of the 'working genome'
@@ -53,23 +71,8 @@ for reads in range(-1, -len(geno)-1, -1):
 # Create working genome based on determined ends
 if end != 0: genoW = geno[start:end] # 'working genome' for calculations
 else:        genoW = geno[start:]
+"""		
 
-# Check block
-# print(geno)
-# print(genoS)
-# print(tol)
-# print(start)
-# print(end)
-# print(genoW)
-
-# Calculate stats
-min = min(genoW)
-max = max(genoW)
-avg = sum(genoW)/len(genoW)
-
-# Print results
-print(min, max, f'{avg:.5f}')
-		
 """
 python3 32xcoverage.py 1000 100 100
 5 20 10.82375
