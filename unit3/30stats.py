@@ -9,13 +9,46 @@
 
 import sys
 
+# Convert list to list of values
+nums = [float(sys.argv[val]) for val in range(1, len(sys.argv))]
+
+# Determine min, max
+nums.sort()
+min = nums[0]
+max = nums[-1]
+# print(nums) # check
+
+# Determine median
+med_pos = int(len(nums)/2)
+# print(med_pos) # check
+
+if len(nums)%2 == 0: med = 0.5*(sum(nums[med_pos-1:med_pos]))
+else:                med = nums[med_pos]
+
+# Determine mean
+mean = sum(nums)/len(nums)
+
+# Find std deviation
+sq_diff = 0 # sum of the difference of squares between nums values and mean
+for val in nums: sq_diff += ((val**2) - (mean**2))
+stdev = (sq_diff/(len(nums)))**0.5 
+
+# Print results
+print('Count:', f'{len(nums)}')
+print('Minimum:', f'{min}')
+print('Maximum:', f'{max}')
+print('Mean:', f'{mean:.3f}')
+print('Std. dev:', f'{stdev:.3f}')
+print('Median:', f'{med:.3f}')
+
+"""
+Archived suboptimal code
+
 # Initialize conditions
-sum = 0
 min = None
 max = None
 
-# Convert list to list of values
-nums = [float(sys.argv[val]) for val in range(1, len(sys.argv))]
+# Optimize below portion
 
 # Find minimum, maximum, and mean
 for val in nums:
@@ -33,10 +66,7 @@ for val in nums:
 
 mean = sum/len(nums)
 
-# Find std deviation
-sq_diff = 0 # sum of the difference of squares between nums values and mean
-for val in nums: sq_diff += ((val**2) - (mean**2))
-stdev = (sq_diff/(len(nums)))**0.5 
+# Fix below portion
 
 # Sort list and find middle position
 nums.sort()
@@ -50,14 +80,7 @@ else:
 	med_pos = int(med_pos)
 	med = 0.5*(nums[med_pos] + nums[med_pos-1])
 
-# Print results
-print('Count:', f'{len(nums)}')
-print('Minimum:', f'{min}')
-print('Maximum:', f'{max}')
-print('Mean:', f'{mean:.3f}')
-print('Std. dev:', f'{stdev:.3f}')
-print('Median:', f'{med:.3f}')
-
+"""
 """
 python3 30stats.py 3 1 4 1 5
 Count: 5
