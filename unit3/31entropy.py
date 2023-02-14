@@ -21,8 +21,27 @@ for val in probs:
 	try:    float(val)
 	except: raise ValueError(f'Could not convert {val} into a number.')
 
+# # Test a variation
+# for val in probs: assert(float(val))
+
 # Convert list items to floating points
 probs = [float(val) for val in probs]
+
+# Check that entered probabilities sum to 1, else exit the program
+assert(math.isclose(sum(probs), 1))
+
+# Calculate Shannon entropy
+sum = 0
+for pi in probs: sum += (pi * math.log2(pi))
+H = -sum
+
+# Print results
+print(f'{H:.3f}')
+
+"""
+Archived suboptimal code
+
+# Revise below portion 
 
 # Check that entered probabilities sum to 1 and calculate Shannon entropy,
 # else exit program
@@ -31,9 +50,7 @@ if sum(probs) == 1:
 	for pi in probs: sum += (pi * math.log2(pi))
 	H = -sum # Shannon entropy
 else: raise ValueError(f'The entered probabilities do not sum to 1.')
-
-# Print results
-print(f'{H:.3f}')
+"""
 
 """
 python3 31entropy.py 0.1 0.2 0.3 0.4
