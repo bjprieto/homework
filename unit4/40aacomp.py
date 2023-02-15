@@ -41,7 +41,7 @@ def get_aacomp(seq, aas):
 	aan = [0]*20 # amino acid counts
 	
 	# Var1: Count each residue as you go down the sequence and present results
-	# to stdout all at once. 2.02-2.15s
+	# to stdout all at once. 2.01-2.15s
 	
 	# Count amino acid residues
 	for residue in seq:
@@ -62,7 +62,9 @@ def get_aacomp(seq, aas):
 # 		print(aa, aan[aas.index(aa)], f'{aan[aas.index(aa)]/len(seq):.4f}')
 
 # Perform amino acid composition analysis
-main(gzip.open(sys.argv[1], 'rt'))
+protfile = gzip.open(sys.argv[1], 'rt')
+main(protfile)
+protfile.close()
 
 """
 python3 40aacomp.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_protein.faa.gz
