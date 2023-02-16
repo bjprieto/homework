@@ -21,7 +21,97 @@
 # Hint: create a function for hydrophobic alpha-helix
 # Hint: use the same function for both signal peptide and transmembrane
 
+import sys
+import mcb185
+	
+# Read a fasta file and determine potential transmembrane proteins
+def main(protfile):
+	
+	# Check block (1/3)
+# 	count = 0
 
+	for desc, seq in mcb185.read_fasta(protfile):
+
+		# Check block (2/3)
+# 		print(desc, seq[:30]+'//'+seq[30:], sep ='\n')
+
+		# Determine if the sequence has a signal peptide
+		has_sig = has_hahelix(seq[:30], 8, 2.5)
+
+		# Determine if the sequence has a transmembrane domain
+		has_tmem = has_hahelix(seq[30:], 11, 2.0)
+
+		# Check block (3/3)
+# 		if has_sig == True and has_tmem == True: 
+# 			print('\n')
+# 			count += 1
+# 		if count == 3: break
+		
+		# Print results
+		if has_sig == True and has_tmem == True: print(desc)
+
+def score_kd(seq):
+	
+	# Initialize variables
+	kd_sum = 0 # hydropathy sum
+	aas = 'IVLFCMAGTSWYPHEQDNKR' # all amino acid one-letter codes
+	scores = [4.5, 4.2, 3.8, 2.8, 2.5, 1.9, 1.8, -0.4, -0.7, -0.8, -0.9, -1.3,
+	-1.6, -3.2, -3.5, -3.5, -3.5, -3.5, -3.9, -4.5] # corresponding hydropathy
+	# scores for each amino acid in the same order as aas
+	
+	# Calculate hydropathy score
+	for residue in seq:
+		for aa in aas:
+			if residue == aa: kd_sum += scores[aas.index(aa)]
+			
+	kd = kd_sum/len(seq) # Kyte-Doolittle hydropathy score
+		
+	return kd
+
+def has_hahelix(seq, w_len, thresh):
+	for pos in range(len(seq) - w_len + 1):
+		
+		# Enable window sliding
+		window = seq[pos:pos + w_len]
+		
+		# Calculate KD value
+		kd = score_kd(window)
+		
+		# Determine if the window is capable of having a hydrophobic alpha helix
+		# based on the given threshold
+		if kd > thresh and 'P' not in window:
+			# print(window, pos, kd, sep = '\t') # check
+			return True
+		else: continue
+		
+	return False
+
+
+
+# Generate and test a random sequence with the main parts of main()
+# import random
+# 
+# for i in range(3):
+# 
+# 	# Generate and print the random sequence
+# 	seq = ''
+# 	for nt in range(60): seq += random.choice('IVLFCMAGTSWYPHEQDNKR')
+# 	print(seq[:30]+'//'+seq[30:], sep ='\n')
+# 
+# 	# Determine if the sequence has a signal peptide
+# 	has_sig = has_hahelix(seq[:30], 8, 2.5)
+# 
+# 	# Determine if the sequence has a transmembrane domain
+# 	has_tmem = has_hahelix(seq[30:], 11, 2.0)
+# 
+# 	# Print results
+# 	if has_sig == True and has_tmem == True: print('\n')
+# 	else: print('NO\n')
+
+
+
+# Return transmembrane proteins in the file
+main(sys.argv[1])
 """
 python3 41transmembrane.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_protein.faa.gz
 NP_414560.1 Na(+):H(+) antiporter NhaA [Escherichia coli str. K-12 substr. MG1655]
