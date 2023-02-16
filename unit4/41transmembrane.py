@@ -55,16 +55,19 @@ def score_kd(seq):
 	# Initialize variables
 	kd_sum = 0 # hydropathy sum
 	aas = 'IVLFCMAGTSWYPHEQDNKR' # all amino acid one-letter codes
+	
+	# Corresponding hydropathy scores 
+	# for each amino acid in the same order as aas
 	scores = [4.5, 4.2, 3.8, 2.8, 2.5, 1.9, 1.8, -0.4, -0.7, -0.8, -0.9, -1.3,
-	-1.6, -3.2, -3.5, -3.5, -3.5, -3.5, -3.9, -4.5] # corresponding hydropathy
-	# scores for each amino acid in the same order as aas
+	-1.6, -3.2, -3.5, -3.5, -3.5, -3.5, -3.9, -4.5] 
 	
 	# Calculate hydropathy score
 	for residue in seq:
 		for aa in aas:
 			if residue == aa: kd_sum += scores[aas.index(aa)]
-			
-	kd = kd_sum/len(seq) # Kyte-Doolittle hydropathy score
+	
+	# Kyte-Doolittle hydropathy score
+	kd = kd_sum/len(seq) 
 		
 	return kd
 
@@ -112,6 +115,7 @@ def has_hahelix(seq, w_len, thresh):
 
 # Return transmembrane proteins in the file
 main(sys.argv[1])
+
 """
 python3 41transmembrane.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_protein.faa.gz
 NP_414560.1 Na(+):H(+) antiporter NhaA [Escherichia coli str. K-12 substr. MG1655]
