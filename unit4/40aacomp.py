@@ -12,58 +12,63 @@
 import sys # to receive stdin as variables
 import gzip # to unzip compressed data
 
-def main(protfile):
-	aas = [i for i in 'ACDEFGHIKLMNPQRSTVWY'] # amino acids
-	prots = get_prots(protfile, aas)
-	get_aacomp(prots, aas)
+# Reports amino acid composition of a fasta file of protein sequences
+def get_aacomp(protfile):
+	
+	prots = get_prots(protfile) # stringed protein sequences
+	
+	# Report stats
+	for nt_stats in cal_aacomp(prots): 
+		print(nt_stats[0], nt_stats[1], nt_stats[2])
 
 # In a file of protein sequences, processes the file by cutting out non-seq
 # information and joining the sequences into a string
-def get_prots(protfile, aas):
+def get_prots(protfile):
 	
-	# Set variables
+	# Initialize variables
 	seq = ''
 	
 	# Process the protein sequences into one large sequence without the 
 	# extraneous information
 	for line in protfile:
-		if line[0] in aas:
+		if line[0] != '>':
 			line = line.rstrip()
 			seq += line
 		else: continue
 		
 	return seq
 
-# Gives the amino acid composition given a sequence
-def get_aacomp(seq, aas):
+# Calculates the amino acid composition given a sequence
+def cal_aacomp(seq):
 
 	# Set variables
+	aas = [i for i in 'ACDEFGHIKLMNPQRSTVWY'] # amino acids
 	aan = [0]*20 # amino acid counts
 	
-	# Var1: Count each residue as you go down the sequence and present results
-	# to stdout all at once. 2.01-2.15s
-	
-	# Count amino acid residues
-	for residue in seq:
-		for aa in aas:
-			if residue == aa: aan[aas.index(aa)] += 1
-		
-	# Generate table of amino acid composition to stdout
-	for aa, count in zip(aas, aan):
-		print(aa, count, f'{count/len(seq):.4f}')
-	
-# 	# Var2: Go down the entire sequence counting for one residue and print
-# 	# to stdout sequentially. 2.14-2.20s (slightly slower; expected)
+# 	# Var1: Count each residue as you go down the sequence and present results
+# 	# to stdout all at once. (2.01-2.15s)
 # 	
-# 	# Count amino acid residues.
-# 	for aa in aas:
-# 		for residue in seq:
+# 	# Count amino acid residues
+# 	for residue in seq:
+# 		for aa in aas:
 # 			if residue == aa: aan[aas.index(aa)] += 1
-# 		print(aa, aan[aas.index(aa)], f'{aan[aas.index(aa)]/len(seq):.4f}')
+# 		
+# 	# Generate table of amino acid composition to stdout
+# 	for aa, count in zip(aas, aan):
+# 		print(aa, count, f'{count/len(seq):.4f}')
+	
+	# Var2: Go down the entire sequence counting for one residue and print
+	# to stdout sequentially. (1.90-2:10s)
+	
+	# Count amino acid residues and yield amino acid compositions
+	for aa in aas:
+		for residue in seq:
+			if residue == aa: aan[aas.index(aa)] += 1
+		yield(aa, aan[aas.index(aa)], f'{aan[aas.index(aa)]/len(seq):.4f}')
 
 # Perform amino acid composition analysis
-protfile = gzip.open(sys.argv[1], 'rt')
-main(protfile)
+protfile = gzip.open(sys.argv[1], 'rt') # protein sequence fasta file
+get_aacomp(protfile)
 protfile.close()
 
 """
