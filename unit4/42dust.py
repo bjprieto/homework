@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # 42dust.py
 
 # Write a program that performs entropy filtering on nucleotide fasta files
