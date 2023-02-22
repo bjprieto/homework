@@ -25,7 +25,7 @@ import sys
 import mcb185
 	
 # Read a fasta file and determine potential transmembrane proteins
-def main(protfile):
+def get_tmprot(protfile):
 	
 	# Check block (1/3)
 # 	count = 0
@@ -114,7 +114,7 @@ def has_hahelix(seq, w_len, thresh):
 
 
 # Return transmembrane proteins in the file
-main(sys.argv[1])
+get_tmprot(sys.argv[1])
 
 """
 python3 41transmembrane.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_protein.faa.gz
