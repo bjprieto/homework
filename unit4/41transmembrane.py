@@ -23,32 +23,6 @@
 
 import sys
 import mcb185
-	
-# Read a fasta file and determine potential transmembrane proteins
-def get_tmprot(protfile):
-	
-	# Check block (1/3)
-# 	count = 0
-
-	for desc, seq in mcb185.read_fasta(protfile):
-
-		# Check block (2/3)
-# 		print(desc, seq[:30]+'//'+seq[30:], sep ='\n')
-
-		# Determine if the sequence has a signal peptide
-		has_sig = has_hahelix(seq[:30], 8, 2.5)
-
-		# Determine if the sequence has a transmembrane domain
-		has_tmem = has_hahelix(seq[30:], 11, 2.0)
-
-		# Check block (3/3)
-# 		if has_sig == True and has_tmem == True: 
-# 			print('\n')
-# 			count += 1
-# 		if count == 3: break
-		
-		# Print results
-		if has_sig == True and has_tmem == True: print(desc)
 
 def score_kd(seq):
 	
@@ -89,8 +63,6 @@ def has_hahelix(seq, w_len, thresh):
 		
 	return False
 
-
-
 # Generate and test a random sequence with the main parts of main()
 # import random
 # 
@@ -112,9 +84,30 @@ def has_hahelix(seq, w_len, thresh):
 # 	else: print('NO\n')
 
 
+# Read a fasta file and determine potential transmembrane proteins
 
-# Return transmembrane proteins in the file
-get_tmprot(sys.argv[1])
+# Check block (1/3)
+# count = 0
+
+for desc, seq in mcb185.read_fasta(sys.argv[1]):
+
+	# Check block (2/3)
+# 	print(desc, seq[:30]+'//'+seq[30:], sep ='\n')
+
+	# Determine if the sequence has a signal peptide
+	has_sig = has_hahelix(seq[:30], 8, 2.5)
+
+	# Determine if the sequence has a transmembrane domain
+	has_tmem = has_hahelix(seq[30:], 11, 2.0)
+
+	# Check block (3/3)
+# 	if has_sig == True and has_tmem == True: 
+# 		print('\n')
+# 		count += 1
+# 	if count == 3: break
+	
+	# Print results
+	if has_sig == True and has_tmem == True: print(desc)
 
 """
 python3 41transmembrane.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_protein.faa.gz

@@ -24,14 +24,6 @@ seq = sys.argv[1] # genome fasta file
 winlen = int(sys.argv[2]) # window length
 sthresh = float(sys.argv[3]) # entropy threshold
 		
-# Performs an entropy filter on a given DNA sequence fasta file based on 
-# given window length and entropy threshold, printing the filtered sequence 
-def sfilter(seq_file, winlen, sthresh):
-	for seq in mcb185.read_fasta(seq_file):
-		print('>'+seq[0])
-		for line in seq[1:]:
-			for nts in scal_slide(line, winlen, sthresh): print(nts)
-
 # Calculates entropy of a given sequence
 def scal(win):
 
@@ -96,8 +88,12 @@ def scal_slide(seq, winlen, sthresh):
 # print(tseq)
 # for seq in (tseq, winlen, sthresh): print(seq)
 
-# Perform entropy filtering
-for fil_seq in sfilter(seq, winlen, sthresh): print(fil_seq)
+# Performs an entropy filter on a given DNA sequence fasta file based on 
+# given window length and entropy threshold, printing the filtered sequence 
+for seq in mcb185.read_fasta(seq):
+	print('>'+seq[0])
+	for line in seq[1:]:
+		for nts in scal_slide(line, winlen, sthresh): print(nts)
 
 """
 python3 42dust.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_genomic.fna.gz 11 1.4
