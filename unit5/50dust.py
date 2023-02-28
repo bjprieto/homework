@@ -60,8 +60,6 @@ parser.add_argument('--s', required=False, action='store_true',
 arg = parser.parse_args()
 
 
-
-
 # Entropy calculator for a given window sequence
 def scal(win):
 
@@ -93,7 +91,7 @@ def sfil(seq, winlen):
 	 
 	# Initialize variables
 	win = seq[:winlen].upper() # sequence window
-	fil_seq = seq # copy of entire sequence
+	fil_seq = seq.upper() # copy of entire sequence
 	
 	# Iterates over each window, replacing the original seq with a filtered one
 	for pos in range(len(seq)):
