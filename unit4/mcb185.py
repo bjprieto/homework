@@ -29,4 +29,15 @@ def read_fasta(filename):
 	yield(name, ''.join(seqs))
 	fp.close()
 
-# def other functions...
+def translate(tslr, cseq, rf):
+	
+	pseq = ''
+
+	for pos in range(rf-1, len(cseq), 3):
+		
+		cd = cseq[pos:pos+3].upper()
+		
+		if cd in tslr: pseq += tslr[cd]
+		else:			pseq += 'X'
+		
+		if pseq[-1] == '*': return pseq
