@@ -58,11 +58,12 @@ cttgccccatcaaccatgaagatcaagatcatcgccccaccagagcgcaagtactccgtc\
 tggatcggaggatctatcctcgcttccctctccaccttccaacagatgtggatctccaag\
 caagaatacgacgagtccggcccatccatcgttcaccgcaagtgcttctaa\
 "
+
 # Print the results of translating the C. elegans act-1 sequence
 # in each reading frame
-print('Frame 1:', mcb185.translate(gcode, actin_cds, 1), 
-	  'Frame 2:', mcb185.translate(gcode, actin_cds, 2),
-	  'Frame 3:', mcb185.translate(gcode, actin_cds, 3),
+print('Frame 1:', mcb185.translate(actin_cds, 1), 
+	  'Frame 2:', mcb185.translate(actin_cds, 2),
+	  'Frame 3:', mcb185.translate(actin_cds, 3),
 	  sep='\n\n'
 )
 
