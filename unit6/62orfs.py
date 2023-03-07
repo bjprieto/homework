@@ -15,6 +15,78 @@
 
 # Note: your genes should be similar to those in the real genome
 
+import argparse
+import mcb185
+import re
+
+parser = argparse.ArgumentParser(
+	description='Finds open reading frames for each given nucleotide FASTA file\
+	 and returns the identifier, range, and first 10 amino acids'
+)
+	
+parser.add_argument('file', type=str, metavar='<path>', help='fasta file')
+parser.add_argument('-l', type=int, metavar='<int>', required=False,
+	default=300, help='minimum ORF size [%(default)i]')
+
+arg = parser.parse_args()
+
+anti = {'A':'T', 'T':'A', 'G':'C', 'C':'G'}
+
+# non re version
+# def get_orfs(seq, strand):
+# 	orfs = []
+# 	start_pos = 0
+# 
+# 	while True:
+# 		for pos in range(start_pos, len(seq)-1):
+# 			cd = seq[pos:pos+3]
+# 			if cd == 'ATG':
+# 				pseq = mcb185.translate(seq[pos:], 1)
+# 				if pseq == None: break
+# 				if len(pseq) >= (arg.l/3):
+# 					orfs.append((iden, pos+1, pos+len(pseq)*3, strand,
+# 								 pseq[:10]))
+# 					start_pos = pos+len(pseq)*3
+# 					break
+# 		if pseq == None or start_pos >= (len(seq)-arg.l): return orfs
+
+# re version (non-functional)
+# def get_orfs(seq, strand):
+# 	orfs = []
+# 	start_pos = 0
+# 	count = 0
+# 
+# 	while True:
+# 		cd = re.search('ATG', seq[start_pos:])
+# 		pseq = mcb185.translate(seq[cd.start():], 1)
+# 		if pseq == None: break
+# 		end = cd.start()+len(pseq)*3
+# 		print(end)
+# 		start_pos = end+1
+# 		
+# 		count += 1
+# 		if count == 10: break
+# 		
+# 		if len(pseq) >= (arg.l/3):
+# 			orfs.append((iden, pos+1, end, strand, pseq[:10]))
+# 		if pseq == None or start_pos >= (len(seq)-arg.l): return orfs
+
+
+
+for desc, seq in mcb185.read_fasta(arg.file):
+	iden = re.search('\w+.\S+', desc)
+	iden = iden.group()
+	
+	aseq = ''
+	for nt in seq[::-1]: aseq += anti[nt]
+	print(mcb185.translate(seq[::-1], 3))
+
+# 	all_orfs = get_orfs(aseq, '-')
+# 	all_orfs = get_orfs(seq, '+')
+# 	all_orfs = all_orfs + get_orfs(seq, '+')
+
+# for iden, start, end, strand, pseq in all_orfs:
+# 	print(iden, start, end, strand, pseq)
 
 """
 python3 62orfs.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_genomic.fna.gz
