@@ -35,6 +35,7 @@ import random # for testing randomly generating sequences
 
 # 50dust | head == real: 1.179-1.355 (n = 5) (week 9)
 # %diff 50:42 ~= 280% slower, much better :)
+# %diff 50_new:50_old ~= 10x faster, YES.
 
 # Note: Executable as '50dust'
 
