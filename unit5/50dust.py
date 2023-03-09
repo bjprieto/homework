@@ -30,8 +30,11 @@ import random # for testing randomly generating sequences
 
 # Times
 # 42dust | head == real: 0.448-0.467s (n = 5)
-# 50dust | head == real: 13.496-13.843s (n = 5)
+# 50dust | head == real: 13.496-13.843s (n = 5) (week 7)
 # %diff 50:42 ~= 3000% slower >:(
+
+# 50dust | head == real: 1.179-1.355 (n = 5) (week 9)
+# %diff 50:42 ~= 280% slower, much better :)
 
 # Note: Executable as '50dust'
 
@@ -88,10 +91,10 @@ def scal(win):
 	
 # Entropy filter
 def sfil(seq, winlen):
-	 
+ 
 	# Initialize variables
 	win = seq[:winlen].upper() # sequence window
-	fil_seq = seq.upper() # copy of entire sequence
+	fil_seq = [nt.upper() for nt in seq] # copy of entire sequence
 	
 	# Iterates over each window, replacing the original seq with a filtered one
 	for pos in range(len(seq)):
@@ -109,13 +112,13 @@ def sfil(seq, winlen):
 			
 			# Unmasked/soft filtering
 			if h < arg.t and arg.s == True:
-				fil_seq = fil_seq.replace(
-					fil_seq[pos:pos+winlen], fil_seq[pos:pos+winlen].lower())
+				for nt in range(pos, pos+winlen):
+					fil_seq[nt] = fil_seq[nt].lower()
 			
 			# Masked/hard filtering
 			elif h < arg.t and arg.s == False:
-				fil_seq = fil_seq.replace(
-					fil_seq[pos:pos+winlen], 'N'*winlen)
+				for nt in range(pos, pos+winlen):
+					fil_seq[nt] = 'N'
 		
 		# Print sequence in rows of 60 characters
 		if (pos+1) % 60 == 0: yield(fil_seq[pos-59:pos+1])
@@ -138,14 +141,13 @@ def sfil(seq, winlen):
 # for i in sfil(seq, arg.w): print(i)
 
 # Perform entropy filter on the given file
-for line in mcb185.read_fasta(arg.file):
+for desc, seq in mcb185.read_fasta(arg.file):
 
 	# Print genome description
-	print('>'+line[0]) 
+	print('>'+desc) 
 	
 	# Print the filtered sequence
-	for seq in line[1:]: 
-		for line in sfil(seq, arg.w): print(line)
+	for line in sfil(seq, arg.w): print(''.join(line))
 
 """
 python3 50dust.py -w 11 -t 1.4 -s e.coli.fna  | head
