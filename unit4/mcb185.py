@@ -59,4 +59,4 @@ def translate(cseq, rf):
 		if cd in gcode: pseq += gcode[cd]
 		else:			pseq += 'X'
 		
-	return pseq
+		if pseq[-1] == '*': return pseq
