@@ -15,79 +15,107 @@
 
 # Note: your genes should be similar to those in the real genome
 
-import argparse
-import mcb185
-import re
 
+
+import argparse # parse CLI arguments, give help on program usage
+import mcb185 # read fasta, translate sequences
+import re # search for sequence identifier
+
+
+
+# Initialize argument parser
 parser = argparse.ArgumentParser(
-	description='Finds open reading frames for each given nucleotide FASTA file\
-	 and returns the identifier, range, and first 10 amino acids'
+	description='Finds all possible open reading frames for a given nucleotide\
+	FASTA file and returns the identifier, range, and first 10 amino acids for\
+	the sequence of the given strand(s) and their complement(s).'
 )
 	
-parser.add_argument('file', type=str, metavar='<path>', help='fasta file')
+# Take arguments: fasta file and min orf len
+parser.add_argument('file', type=str, metavar='<path>', help='FASTA file')
 parser.add_argument('-l', type=int, metavar='<int>', required=False,
 	default=300, help='minimum ORF size [%(default)i]')
 
+# Finish argument parser setup
 arg = parser.parse_args()
 
-anti = {'A':'T', 'T':'A', 'G':'C', 'C':'G'}
 
-# non re version
-# def get_orfs(seq, strand):
-# 	orfs = []
-# 	start_pos = 0
-# 
-# 	while True:
-# 		for pos in range(start_pos, len(seq)-1):
-# 			cd = seq[pos:pos+3]
-# 			if cd == 'ATG':
-# 				pseq = mcb185.translate(seq[pos:], 1)
-# 				if pseq == None: break
-# 				if len(pseq) >= (arg.l/3):
-# 					orfs.append((iden, pos+1, pos+len(pseq)*3, strand,
-# 								 pseq[:10]))
-# 					start_pos = pos+len(pseq)*3
-# 					break
-# 		if pseq == None or start_pos >= (len(seq)-arg.l): return orfs
 
-# re version (non-functional)
-# def get_orfs(seq, strand):
-# 	orfs = []
-# 	start_pos = 0
-# 	count = 0
-# 
-# 	while True:
-# 		cd = re.search('ATG', seq[start_pos:])
-# 		pseq = mcb185.translate(seq[cd.start():], 1)
-# 		if pseq == None: break
-# 		end = cd.start()+len(pseq)*3
-# 		print(end)
-# 		start_pos = end+1
-# 		
-# 		count += 1
-# 		if count == 10: break
-# 		
-# 		if len(pseq) >= (arg.l/3):
-# 			orfs.append((iden, pos+1, end, strand, pseq[:10]))
-# 		if pseq == None or start_pos >= (len(seq)-arg.l): return orfs
+# brainstorm
+# 2 main approaches: dna seq-centered or prot seq-centered
+# i.e. find "ATG...STOP" or find "M...*"
+
+# dna seq-based
+# find ATG and translate for 2 strands
+	# re.finditer()
+	# sliding window
+	# re.search(), moving start search position
+
+# prot seq-based
+# translate 6 reading frames and find each orf that way
+	# .split() on *s > how implement min len?
+	# re.finditer() with translated seqs > how implement min len?
 
 
 
+# Finds all possible orfs in a given sequence with given min len
+def get_orfs(iden, strand, seq):
+
+	# Initialize variables
+	anti = {'A':'T', 'T':'A', 'G':'C', 'C':'G'} 
+	
+	# Generate opposite strand if called for
+	if strand == '-':
+		aseq = '' # opposite strand sequence
+		for nt in seq[::-1]: aseq += anti[nt]
+		seq = aseq
+
+	# Check codons for start codon, and return valid prot seqs
+	for i in range(len(seq)-3):
+	
+		# Check that the start codon would meet the min len
+		if i >= len(seq)-arg.l: break
+		
+		# Slide codon window
+		cd = seq[i:i+3]
+		
+		# Get prot seq if the codon is a typical start codon
+		if cd == 'ATG': 
+		
+			# Translate seq with start codon into its protein sequence
+			pseq = mcb185.translate(seq[i:], 1)
+			
+			# Check translation went through
+			if pseq == None: continue
+			
+			# Process prot seq for handoff
+			pseq = pseq.split('*')[0]
+			start = i+len(pseq)*3+3 # start of the orf
+			
+			# Check for min len
+			if len(pseq) < arg.l/3 or pseq == None: continue
+			
+			# Report orf data in terms of the given strand's nucleotide sequence
+			elif strand == '+':
+				yield(iden, i+1, start, '+', pseq[:10])
+				continue
+			elif strand == '-':
+				yield(iden, len(seq)-start+1, len(seq)-i, '-', pseq[:10])
+				continue
+
+# Reads a nucleotide fasta file and returns all possible orfs in the given 
+# strand sequence and its opposite strand
 for desc, seq in mcb185.read_fasta(arg.file):
+
+	# Obtain the identifier for the sequence
 	iden = re.search('\w+.\S+', desc)
 	iden = iden.group()
-	
-	aseq = ''
-	for nt in seq[::-1]: aseq += anti[nt]
-	print(mcb185.translate(seq[::-1], 3))
 
-# 	all_orfs = get_orfs(aseq, '-')
-# 	all_orfs = get_orfs(seq, '+')
-# 	all_orfs = all_orfs + get_orfs(seq, '+')
-
-# for iden, start, end, strand, pseq in all_orfs:
-# 	print(iden, start, end, strand, pseq)
-
+	# Report the orf stats for each strand
+	for iden, start, end, strand, pseq in get_orfs(iden, '+', seq):
+		print(iden, start, end, strand, pseq)
+	for iden, start, end, strand, pseq in get_orfs(iden, '-', seq):
+		print(iden, start, end, strand, pseq)
+		
 """
 python3 62orfs.py ~/DATA/E.coli/GCF_000005845.2_ASM584v2_genomic.fna.gz
 NC_000913.3 108 500 - MVFSIIATRW
