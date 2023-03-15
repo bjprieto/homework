@@ -10,7 +10,8 @@ import re # extract relevant info
 import json # report results
 
 # Initialize argument parser
-parser = argparse.ArgumentParser(description='')
+parser = argparse.ArgumentParser(
+	description='Takes genes from a gff file and converts information in JSON.')
 parser.add_argument('file', type=str, metavar='<path>', help='gff file')
 arg = parser.parse_args()
 
